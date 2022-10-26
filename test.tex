@@ -1,0 +1,76 @@
+\documentclass[11pt,compact]{lecture}
+
+\usepackage{notation_fr}
+
+
+\title{Document de test}
+\subtitle{Heyyyy}
+\author{Siandfrance}
+\institution{My Desk}
+\date{2022}
+\coauthors{Also Siandfrance (Siandfrance@mail.net), Still Siandfrance (Siandfrance@mail.net)}
+\contact{Siandfrance@mail.net}
+
+
+\begin{document}
+
+\maketitlepage
+
+
+\defsection{Hello World}
+
+\defsubsection{C'est une sous section}
+
+\begin{definition}[label=deffunc]{Définition de fonction}
+    On définit la fonction $\Phi$ parfaitement arbitraire de la manière suivante:
+    $$ \function{\Phi}{\N^*}{\R}{n}{ \frac{2n}{n+1} } $$
+\end{definition}
+
+
+\begin{property}[label=philimit]{Limite}
+    $$ \Phi(x) \limit{}{n \infty} 2 $$
+\end{property}
+
+
+\begin{proof}[]{\prref{philimit}}
+    \[
+        \begin{split}
+            \Phi(x) &\fequiv{}{n\infty} \frac{2n}{n} = 2 \\
+                    &\limit{}{n\infty} 2
+        \end{split}
+    \]
+\end{proof}
+
+
+\remk{Je fais remarquer que ceci est une remarque.}
+
+
+Je présente un premier paragraphe: Lorem ipsum dolor sit amet, consectetur
+adipiscing elit. Vestibulum lobortis purus vitae quam imperdiet efficitur.
+Integer auctor vulputate sapien at bibendum. Vestibulum tincidunt ullamcorper mi
+vel congue. Donec ultricies libero vel malesuada lacinia. Vestibulum eget sapien
+sed justo dignissim venenatis eu at nunc. Phasellus sollicitudin, metus a
+convallis consectetur, metus nibh posuere justo, nec auctor justo augue ac
+lectus. Quisque id enim turpis. Quisque a lobortis eros. Aenean finibus augue eu
+eros posuere venenatis. Cras vehicula metus ante, quis cursus augue aliquam
+quis. Aenean viverra ipsum a lectus scelerisque facilisis. Aliquam id urna
+consequat, ultrices velit nec, suscipit est. Curabitur fringilla, tellus at
+pretium finibus, urna augue euismod urna, quis mollis massa ipsum eu massa.
+Vestibulum eleifend non lectus in ornare. Donec ut sagittis purus.
+
+Et voici un autre paragraphe: Praesent ligula ex, ultricies sed magna ut,
+laoreet tempus nisl. Aenean dictum a justo suscipit sagittis. Vestibulum dapibus
+sem et volutpat fringilla. Quisque hendrerit, mi eu condimentum vestibulum,
+augue diam ornare purus, id finibus arcu quam sed purus. Integer vestibulum
+malesuada purus, sed commodo tortor sollicitudin a. Nam varius nunc odio, vel
+porttitor eros sodales quis. Sed at velit faucibus, dictum ligula eget, bibendum
+augue. Mauris condimentum orci eu eros cursus commodo. Morbi fringilla purus vel
+sapien semper consectetur. 
+
+
+\begin{theorem}[]{Random Stuff}
+    C'est parfaitement inutile comme théorème !!!
+\end{theorem}
+
+
+\end{document}
