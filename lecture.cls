@@ -24,6 +24,7 @@
 \newcommand\@type{}
 
 \RequirePackage{ifthen}
+\newcommand\ifdefinedelse[3]{\ifthenelse{\equal{#1}{}}{#3}{#2}}
 
 \newboolean{comments}\setboolean{comments}{false}
 \newboolean{code}\setboolean{code}{false}
@@ -73,7 +74,12 @@
 %%%%%%%%%%
 
 \RequirePackage{xcolor}             % Colors !!!
+
 \RequirePackage{tcolorbox}          % BOXES !!!
+\RequirePackage{varwidth}           % box max width
+\RequirePackage{tikz}
+\tcbuselibrary{skins,breakable}
+
 \tcbuselibrary{skins}
 \RequirePackage{titling}            % redefine title
 \RequirePackage{fancyhdr}           % great headers
@@ -81,6 +87,8 @@
 \RequirePackage{lastpage}           % total page count
 \RequirePackage{amsmath,amssymb}    % math stuff
 \RequirePackage{ifthen}             % conditionals
+\RequirePackage{stmaryrd}
+\RequirePackage{esint}              % Integrals
 
 % reference links
 \RequirePackage{hyperref}
@@ -116,7 +124,17 @@
 \newcommand\tdefinition{definition}
 \newcommand\tDefinition{Definition}
 
-\newcommand\tproof{Proof of}
+\newcommand\tproof{proof of}
+\newcommand\tProof{Proof of}
+
+\newcommand\texample{example}
+\newcommand\tExample{Example}
+
+\newcommand\texercise{exercise}
+\newcommand\tExercise{Exercise}
+
+\newcommand\tmethod{method}
+\newcommand\tMethod{Method}
 
 
 %% Info commands
@@ -133,6 +151,16 @@
 
 \newcommand\thecoauthors{}
 \newcommand\coauthors[1]{\renewcommand\thecoauthors{#1}}
+
+\newcommand\thedate{}
+
+
+\newcommand\thetitle{}
+\newcommand\theshorttitle{}
+\renewcommand\title[2][]{
+    \renewcommand\thetitle{#2}
+    \renewcommand\theshorttitle{#1}
+}
 
 
 %% Generate title page
@@ -153,7 +181,8 @@
             \vspace{0.8cm}
 
             \Large
-            \theauthor \hspace{1pt} (\textit{\thecontact})
+            \theauthor \hspace{1pt}
+            \ifdefinedelse{\thecontact}{(\textit{\thecontact})}{}
             
             \vspace{0.2cm}
             \large
@@ -163,7 +192,8 @@
             \noindent\rule{80pt}{0.1pt}
             \vspace{0.3cm}
 
-            \theinstitution\\
+            \theinstitution
+
             \thedate
         \end{center}
 
@@ -195,6 +225,12 @@
 %   {}{}% <success><failure>
 % \makeatother
 
+% At first set empty section titles
+\def\sectiontitle{}
+\def\subsectiontitle{}
+\def\subsubsectiontitle{}
+
+% Sectio title definitions in document
 \newcommand\defsection[1]{\def\sectiontitle{#1}\section{#1}}
 \newcommand\defsubsection[1]{\def\subsectiontitle{#1}\subsection{#1}}
 \newcommand\defsubsubsection[1]{\def\subsubsectiontitle{#1}\subsubsection{#1}}
@@ -205,8 +241,8 @@
 % Header
 \fancyhead{}
 \setlength{\headheight}{14pt}
-\fancyhead[L]{\textbf{\thetitle}}
-\fancyhead[R]{\thesection \hspace{5px} \sectiontitle}
+\fancyhead[L]{\textbf{\ifdefinedelse{\theshorttitle}{\theshorttitle}{\thetitle}}}
+\fancyhead[R]{\ifdefinedelse{\sectiontitle}{\thesection \hspace{5px} \sectiontitle}{}}
 
 % Footer
 \fancyfoot{}
@@ -283,14 +319,19 @@
 \DeclareMathOperator{\Card}{\#}             % cardinal
 \DeclareMathOperator{\pset}{\mathcal{P}}    % power set
 
+\newcommand{\tuple}[1]{\lop #1 \rcp}
 
 % Others
 
-\newcommand{\conj}[1]{\overline{#1}}        % conjugate
+\newcommand{\conj}[1]{\bar{#1}}        % conjugate
 
 
 
 %% Abbreviations
+
+\newcommand{\Cte}{\mathcal{C}^{te}}
+
+\newcommand{\defeq}{\underset{\text{def}}{=}}
 
 \renewcommand{\epsilon}{\varepsilon}
 % \renewcommand{\emptyset}{\varnothing}
@@ -301,6 +342,8 @@
 \newcommand{\tand}{\quad\text{and}\quad}
 \newcommand{\tor}{\quad\text{or}\quad}
 \newcommand{\iif}{\quad\text{if and only if}\quad}
+\newcommand{\when}{\quad\text{when}\quad}
+\newcommand{\otherwise}{\quad\text{otherwise}}
 
 % equivalent
 \newcommand{\Dimp}{\Longleftrightarrow}
@@ -314,13 +357,15 @@
 \newcommand{\qImp}{\quad\Longrightarrow\quad}
 \newcommand{\qimp}{\quad\Rightarrow\quad}
 
+\newcommand{\proofright}{\fbox{$\Rightarrow$}\hspace{0.5em}}
+\newcommand{\proofleft}{\fbox{$\Leftarrow$}\hspace{0.5em}}
 
 % delimiters
 
 \newcommand{\lop}{\left(}
 \newcommand{\lcp}{\left)}
-\newcommand{\rop}{\left(}
-\newcommand{\rcp}{\left)}
+\newcommand{\rop}{\right(}
+\newcommand{\rcp}{\right)}
 
 \newcommand{\lob}{\left[}
 \newcommand{\lcb}{\left]}
@@ -332,26 +377,33 @@
 \newcommand{\roc}{\right\{}
 \newcommand{\rcc}{\right\}}
 
+\newcommand{\labs}{\left|}
+\newcommand{\rabs}{\right|}
+\newcommand{\abs}[1]{\labs #1 \rabs}
+
 % intervals
 \newcommand{\open}[1]{\lop#1\rcp}
 \newcommand{\openl}[1]{\lop#1\rcb}
 \newcommand{\openr}[1]{\lob#1\rcp}
 \newcommand{\close}[1]{\lob#1\rcb}
 
+\newcommand{\intclose}[1]{\llbracket#1\rrbracket}
+
 
 % functions
 
 \newcommand{\function}[5]{
-    {\setlength{\arraycolsep}{2pt}
-    \begin{array}{r@{\,}ccl}
-        #1\colon & #2 \longrightarrow & #3\\
-                 & #4 \longmapsto     & #5
-    \end{array}
-    }
+    \begin{aligned}[t]
+        \setlength{\arraycolsep}{2pt}
+        \begin{array}{r@{\,}ccl}
+            #1\colon & #2 & \longrightarrow & #3\\
+                     & #4 & \longmapsto     & #5
+        \end{array}
+    \end{aligned}
 }
 
 \newcommand{\func}[3]{
-    #1\colon #2 \mapsto #3
+    \ifdefinedelse{#1}{#1\colon }{}#2 \mapsto #3
 }
 
 \newcommand{\funcset}[3]{
@@ -399,6 +451,21 @@
 }
 
 
+% Multiline
+
+\newcommand{\multiexpr}[1]{
+    \loc
+    {
+        \everymath={\displaystyle}
+        \begin{aligned}
+            \begin{array}{ll}
+                #1
+            \end{array}
+        \end{aligned}
+    }
+    \right.
+}
+
 
 %% Theorem, properties, proofs...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -409,7 +476,7 @@
     
     \vspace{0.2cm}},
     colframe=violet!80!black, colback=violet!10!white,
-    coltitle=black, title=$\Delta$ \tDefinition~\thetcbcounter: #2,
+    coltitle=black, title=$\Delta$ \tDefinition~\thetcbcounter:~#2,
     before skip=15pt, after skip=15pt, #1
 }
 
@@ -419,7 +486,7 @@
     
     \vspace{0.2cm}},
     colframe=cyan!60!black, colback=blue!10!white,
-    coltitle=black, title=$\tau$ \tTheorem~\thetcbcounter: #2,
+    coltitle=black, title=$\tau$ \tTheorem~\thetcbcounter:~#2,
     before skip=15pt, after skip=15pt, #1
 }
 
@@ -432,7 +499,17 @@
     
     \vspace{0.2cm}},
     colframe=orange!55!black, colback=orange!15!white,
-    coltitle=black, title=$\Xi$ \tProperty~\thetcbcounter: #2,
+    coltitle=black, title=$\Xi$ \tProperty~\thetcbcounter:~#2,
+    before skip=15pt, after skip=15pt, #1
+}
+
+
+\newtcolorbox[]{method}[2][]{
+    detach title,before upper={\underline{\textbf{\tcbtitle}}
+    
+    \vspace{0.2cm}},
+    colframe=lime!55!black, colback=lime!15!white,
+    coltitle=black, title=$\mu$ \tMethod:~#2,
     before skip=15pt, after skip=15pt, #1
 }
 
@@ -441,12 +518,15 @@
 
 
 \newtcolorbox{proof}[2][]{
-    enhanced, blanker, detach title, before upper={\textbf{\tcbtitle}
-    
+    enhanced, breakable, blanker, detach title, before upper={\textbf{\tcbtitle}
+
     \vspace{0.2cm}},
     borderline west={1.5pt}{-5pt}{darkgray}, frame hidden, coltitle=black,
-    title=\tproof~#2:, before skip=15pt, after skip=15pt, #1
+    title=$\Gamma$ \tProof~#2:, before skip=15pt, after skip=15pt, #1
 }
+
+
+\newcommand\qed{\begin{flushright}$\blacksquare$\end{flushright}}
 
 
 \newtcbox{\remk}{enhanced,
@@ -455,12 +535,39 @@
     colback=yellow!50,
     colframe=yellow!20!black,
     sharp corners=west,
+    varwidth upper, % ??? new line problem
     underlay={%
     %   \path[fill=tcbcolback!80!black] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
     %   \path[draw=tcbcolframe,shorten <=-0.05mm,shorten >=-0.05mm] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
       \path[fill=yellow!30!black,draw=none] (interior.south west) rectangle node[white]{!} ([xshift=4mm]interior.north west);
       },
     drop fuzzy shadow
+}
+
+
+\newtcolorbox[auto counter, number within=section]{example}[2][]{
+    enhanced, breakable, blanker, detach title, before upper={\textbf{\tcbtitle}
+
+    \vspace{0.2cm}},
+    borderline west={1.5pt}{-5pt}{darkgray}, frame hidden, coltitle=black,
+    title=$\sigma$ \tExample~\thetcbcounter:~#2, before skip=15pt, after skip=15pt, #1
+}
+
+
+\newtcolorbox[use counter from=example]{exercise}[2][]{
+    enhanced, breakable, blanker, detach title, before upper={\textbf{\tcbtitle}
+
+    \vspace{0.2cm}},
+    borderline west={1.5pt}{-5pt}{darkgray}, frame hidden, coltitle=black,
+    title=$\Sigma$ \tExercise~\thetcbcounter:~#2, before skip=15pt, after skip=15pt, #1
+}
+
+\newtcolorbox[use counter from=example]{hardexercise}[2][]{
+    enhanced, breakable, blanker, detach title, before upper={\textbf{\tcbtitle}
+
+    \vspace{0.2cm}},
+    borderline west={1.5pt}{-5pt}{darkgray}, frame hidden, coltitle=black,
+    title=$\oiint$ \tExercise~\thetcbcounter:~#2, before skip=15pt, after skip=15pt, #1
 }
 
 
