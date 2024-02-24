@@ -379,7 +379,7 @@
 
 \newcommand{\labs}{\left|}
 \newcommand{\rabs}{\right|}
-\newcommand{\abs}[1]{\labs #1 \rabs}
+\newcommand{\abs}[1]{\labs \ifdefinedelse{#1}{#1}{\cdot} \rabs}
 
 % intervals
 \newcommand{\open}[1]{\lop#1\rcp}
