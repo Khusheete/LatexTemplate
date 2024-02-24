@@ -526,7 +526,22 @@
 }
 
 
-\newcommand\qed{\begin{flushright}$\blacksquare$\end{flushright}}
+\newcommand\qed{
+    % finish
+    \begin{flushright}
+        \begin{tikzpicture}[scale=0.25]
+            % semi-circle
+            \begin{scope}
+                \clip (-1, 0) rectangle (2, -1);
+                \draw (0, 0) circle (1); 
+            \end{scope}
+            \draw (-1, 0) -- (1, 0);
+
+            \draw (-0.4, 0.3) -- (-0.4, 1.4);
+            \draw (0.4, 0.3) -- (0.4, 1.4);
+        \end{tikzpicture}
+    \end{flushright}
+}
 
 
 \newtcbox{\remk}{enhanced,
