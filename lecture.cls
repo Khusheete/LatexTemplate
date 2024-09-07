@@ -32,32 +32,21 @@
 
 %% Options
 
-\DeclareOption{10pt}{\PassOptionsToClass{10pt}{article}}
-\DeclareOption{11pt}{\PassOptionsToClass{11pt}{article}}
-\DeclareOption{12pt}{\PassOptionsToClass{12pt}{article}}
 
-
-% TODO: modif
-\DeclareOption{large}{
-    \PassOptionsToPackage{paperwidth=195mm,paperheight=265mm,twoside,
-    inner=2.2cm,outer=2.2cm,top=2.25cm,bottom=2.25cm}{geometry}
+\newcommand\documenttype[1]{
+    \ifthenelse{\equal{#1}{class}}{
+        \geometry{
+            hscale=0.85, vscale=0.82, vmarginratio=6:5,
+        }
+    }{}
+    \ifthenelse{\equal{#1}{twocolumn}}{
+        \geometry{
+            hscale=0.91, vscale=0.8, vmarginratio=6:5,
+            landscape, twocolumn,
+        }
+    }{}
+    \DefineFancyhdr
 }
-
-\DeclareOption{compact}{
-    \PassOptionsToPackage{paperwidth=160mm,paperheight=240mm,twoside,
-    inner=1.7cm,outer=1.7cm,top=2.25cm,bottom=2.25cm}{geometry}
-}
-
-\DeclareOption{a4}{
-    \PassOptionsToPackage{paperwidth=210mm,paperheight=297mm,twoside,
-    inner=2.2cm,outer=2.2cm,top=2.25cm,bottom=2.25cm}{geometry}
-}
-
-\DeclareOption{a5}{
-    \PassOptionsToPackage{paperwidth=148mm,paperheight=210mm,twoside,
-    inner=1.7cm,outer=1.7cm,top=2.25cm,bottom=2.25cm}{geometry}
-}
-
 
 \DeclareOption{comments}{\setboolean{comments}{true}}
 \DeclareOption{code}{\setboolean{code}{true}}
@@ -65,13 +54,16 @@
 
 %% Defaults
 
-\ExecuteOptions{compact,10pt}
 \ProcessOptions\relax
 \LoadClass{article}
 
 
 %% Packets
 %%%%%%%%%%
+
+
+\RequirePackage{pdfpages}
+\RequirePackage{geometry}
 
 \RequirePackage{xcolor}             % Colors !!!
 
@@ -121,6 +113,9 @@
 \newcommand\tproperty{property}
 \newcommand\tProperty{Property}
 
+\newcommand\tlemma{lemma}
+\newcommand\tLemma{Lemma}
+
 \newcommand\tdefinition{definition}
 \newcommand\tDefinition{Definition}
 
@@ -167,43 +162,43 @@
 %%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\maketitlepage}{
-    \begin{titlepage}
-        \begin{center}
-            \Huge
-            \textbf{\thetitle}
+    \begin{center}
+        \Huge
+        \textbf{\thetitle}
 
+        \ifdefinedelse{\thesubtitle}{
             \vspace{0.2cm}
             \LARGE
             \thesubtitle
+        }{}
 
-            \vspace{0.4cm}
-            \noindent\rule{80pt}{0.1pt}
-            \vspace{0.8cm}
+        \vspace{0.5cm}
 
-            \Large
-            \theauthor \hspace{1pt}
-            \ifdefinedelse{\thecontact}{(\textit{\thecontact})}{}
+        \Large
+        \theauthor \hspace{1pt}
+        \ifdefinedelse{\thecontact}{(\textit{\thecontact})}{}
             
+        \ifdefinedelse{\thecoauthors}{
             \vspace{0.2cm}
             \large
             \textit{\thecoauthors}
+        }{}
 
-            \vspace{0.2cm}
-            \noindent\rule{80pt}{0.1pt}
-            \vspace{0.3cm}
+        \ifthenelse{\equal{\theinstitution}{} \and \equal{\thedate}{}}{}{
+            \vspace{0.5cm}
+        }
 
-            \theinstitution
+        \theinstitution
+        
+        \thedate
+    \end{center}
 
-            \thedate
-        \end{center}
+    \vspace{0.5cm}
 
-        \vspace{2cm}
-
-        \begin{tcolorbox}[arc=0pt,title=\contentstitle]
-            \normalsize
-            \tableofcontents
-        \end{tcolorbox}
-    \end{titlepage}
+    \begin{tcolorbox}[arc=0pt,title=\contentstitle]
+        \normalsize
+        \tableofcontents
+    \end{tcolorbox}
     \newpage
 }
 
@@ -236,21 +231,22 @@
 \newcommand\defsubsubsection[1]{\def\subsubsectiontitle{#1}\subsubsection{#1}}
 
 
-\pagestyle{fancy}
+\newcommand\DefineFancyhdr{
+    \pagestyle{fancy}
 
-% Header
-\fancyhead{}
-\setlength{\headheight}{14pt}
-\fancyhead[L]{\textbf{\ifdefinedelse{\theshorttitle}{\theshorttitle}{\thetitle}}}
-\fancyhead[R]{\ifdefinedelse{\sectiontitle}{\thesection \hspace{5px} \sectiontitle}{}}
+    % Header
+    \fancyhead{}
+    \setlength{\headheight}{14pt}
+    \fancyhead[L]{\textbf{\ifdefinedelse{\theshorttitle}{\theshorttitle}{\thetitle}}}
+    \fancyhead[R]{\ifdefinedelse{\sectiontitle}{\thesection \hspace{5px} \sectiontitle}{}}
 
-% Footer
-\fancyfoot{}
-\renewcommand{\footrulewidth}{0.4pt}
-\fancyfoot[L]{\textit{\theauthor}}
-\fancyfoot[C]{\thepage/\pageref*{LastPage}}
-\fancyfoot[R]{\textit{\thecontact}}
-
+    % Footer
+    \fancyfoot{}
+    \renewcommand{\footrulewidth}{0.4pt}
+    \fancyfoot[L]{\textit{\theauthor}}
+    \fancyfoot[C]{\thepage/\pageref*{LastPage}}
+    \fancyfoot[R]{\textit{\scriptsize \thecontact}}
+}
 
 
 %% Mathemaical symbol declaration
@@ -267,9 +263,15 @@
 
 \newcommand{\K}{\mathbb{K}}
 
+\newcommand{\polynom}[1]{\lob #1 \rcb}
+\newcommand{\genfunc}[1]{\llbracket #1 \rrbracket}
+
 \newcommand{\Primes}{\mathbb{P}} % primes
 
-\newcommand{\M}[2]{\mathcal{M}_#1(#2)} % matrices
+\newcommand{\M}[2]{\mathcal{M}_{#1}(#2)} % matrices
+
+
+\newcommand{\funcset}[1]{\mathcal{F}\lop #1 \rcp}
 
 
 %% Operators
@@ -285,15 +287,13 @@
 
 \newcommand{\norm}[1]{
     \left\|
-        \ifthenelse{\equal{#1}{}}
-            {\cdot}
-            {#1}
+        #1
     \right\|
 }
 
 
 \newcommand{\inner}[2]{
-    \left(
+    \left<
         \ifthenelse{\equal{#1}{}}
             {\cdot}
             {#1}
@@ -301,7 +301,7 @@
         \ifthenelse{\equal{#2}{}}
             {\cdot}
             {#2}
-    \right)
+    \right>
 }
 
 
@@ -310,6 +310,7 @@
 \DeclareMathOperator{\diver}{div}                       % divergence
 \DeclareMathOperator{\curl}{curl}                       % curl
 \DeclareMathOperator{\vcurl}{\overrightarrow{curl}}
+\newcommand{\grad}{\vec{\nabla}}
 
 \newcommand{\deriv}[2]{\dfrac{d #1}{d #2}}                  % derivative
 \newcommand{\partder}[2]{\dfrac{\partial #1}{\partial #2}}  % partial derivative
@@ -359,6 +360,8 @@
 
 \newcommand{\proofright}{\fbox{$\Rightarrow$}\hspace{0.5em}}
 \newcommand{\proofleft}{\fbox{$\Leftarrow$}\hspace{0.5em}}
+\newcommand{\proofsubright}{\fbox{$\subset$}\hspace{0.5em}}
+\newcommand{\proofsubleft}{\fbox{$\supset$}\hspace{0.5em}}
 
 % delimiters
 
@@ -379,7 +382,10 @@
 
 \newcommand{\labs}{\left|}
 \newcommand{\rabs}{\right|}
-\newcommand{\abs}[1]{\labs \ifdefinedelse{#1}{#1}{\cdot} \rabs}
+\newcommand{\abs}[1]{\labs #1 \rabs}
+
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
 
 % intervals
 \newcommand{\open}[1]{\lop#1\rcp}
@@ -403,11 +409,11 @@
 }
 
 \newcommand{\func}[3]{
-    \ifdefinedelse{#1}{#1\colon }{}#2 \mapsto #3
+    \ifdefinedelse{#1}{#1\colon }{}#2 \rightarrow #3
 }
 
-\newcommand{\funcset}[3]{
-    #1\colon #2 \rightarrow #3
+\newcommand{\funcdef}[3]{
+    #1\colon #2 \mapsto #3
 }
 
 
@@ -420,13 +426,14 @@
 
 % limiting processes
 
-\newcommand{\limit}[2]{
-    \ifthenelse{\equal{#2}{}}
+\newcommand{\limit}[3][]{
+    \ifthenelse{\equal{#3}{}}
         {\longrightarrow}
         {\underset{
-            \ifthenelse{\equal{#1}{}}
-                {#2}
-                {#1 \rightarrow #2}
+            \ifdefinedelse{#1}{\underset{#1}
+            {\ifdefinedelse{#2}{#2 \rightarrow}{} #3}
+            }
+            {\ifdefinedelse{#2}{#2 \rightarrow}{} #3}
         }{\longrightarrow}}
 }
 
@@ -476,9 +483,12 @@
     
     \vspace{0.2cm}},
     colframe=violet!80!black, colback=violet!10!white,
-    coltitle=black, title=$\Delta$ \tDefinition~\thetcbcounter:~#2,
+    coltitle=black, title=$\Delta$ \tDefinition~\thetcbcounter:~{#2},
     before skip=15pt, after skip=15pt, #1
 }
+
+
+\newcommand\defref[1]{\hyperref[#1]{$\Delta$ \ref*{#1}}}
 
 
 \newtcolorbox[use counter from=definition]{theorem}[2][]{
@@ -486,7 +496,7 @@
     
     \vspace{0.2cm}},
     colframe=cyan!60!black, colback=blue!10!white,
-    coltitle=black, title=$\tau$ \tTheorem~\thetcbcounter:~#2,
+    coltitle=black, title=$\tau$ \tTheorem~\thetcbcounter:~{#2},
     before skip=15pt, after skip=15pt, #1
 }
 
@@ -499,9 +509,23 @@
     
     \vspace{0.2cm}},
     colframe=orange!55!black, colback=orange!15!white,
-    coltitle=black, title=$\Xi$ \tProperty~\thetcbcounter:~#2,
+    coltitle=black, title=$\Xi$ \tProperty~\thetcbcounter:~{#2},
     before skip=15pt, after skip=15pt, #1
 }
+
+\newcommand\prref[1]{\hyperref[#1]{$\Xi$ \ref*{#1}}}
+
+
+\newtcolorbox[use counter from=definition]{lemma}[2][]{
+    detach title,before upper={\underline{\textbf{\tcbtitle}}
+    
+    \vspace{0.2cm}},
+    colframe=orange!55!black, colback=orange!15!white,
+    coltitle=black, title=$\Lambda$ \tLemma~\thetcbcounter:~{#2},
+    before skip=15pt, after skip=15pt, #1
+}
+
+\newcommand\lmref[1]{\hyperref[#1]{$\Lambda$ \ref*{#1}}}
 
 
 \newtcolorbox[]{method}[2][]{
@@ -514,14 +538,11 @@
 }
 
 
-\newcommand\prref[1]{\hyperref[#1]{$\Xi$ \ref*{#1}}}
-
-
 \newtcolorbox{proof}[2][]{
     enhanced, breakable, blanker, detach title, before upper={\textbf{\tcbtitle}
 
     \vspace{0.2cm}},
-    borderline west={1.5pt}{-5pt}{darkgray}, frame hidden, coltitle=black,
+    borderline west={1.5pt}{0pt}{darkgray}, left=5pt, frame hidden, coltitle=black,
     title=$\Gamma$ \tProof~#2:, before skip=15pt, after skip=15pt, #1
 }
 
@@ -564,7 +585,7 @@
     enhanced, breakable, blanker, detach title, before upper={\textbf{\tcbtitle}
 
     \vspace{0.2cm}},
-    borderline west={1.5pt}{-5pt}{darkgray}, frame hidden, coltitle=black,
+    borderline west={1.5pt}{0pt}{darkgray}, left=5pt, frame hidden, coltitle=black,
     title=$\sigma$ \tExample~\thetcbcounter:~#2, before skip=15pt, after skip=15pt, #1
 }
 
@@ -585,5 +606,31 @@
     title=$\oiint$ \tExercise~\thetcbcounter:~#2, before skip=15pt, after skip=15pt, #1
 }
 
+
+%% Plots
+%%%%%%%%
+
+\newcommand{\theplottitle}{}
+
+\newcommand{\plot}[5]{
+    \renewcommand{\theplottitle}{}
+
+    \begin{center}
+        \begin{tikzpicture}[domain=#1:#2]
+            % Graph region
+            \draw[very thin, color = gray] (#1, #3) grid (#2, #4);
+            \draw[->, very thick] (#1, 0) -- (#2, 0) node[right] {$x$};
+            \draw[->, very thick] (0, #3) -- (0, #4) node[right] {$y$};
+
+            % Graphs
+            #5
+        \end{tikzpicture}
+
+        \theplottitle
+    \end{center}
+}
+
+
+\newcommand{\plottitle}[1]{\renewcommand{\theplottitle}{#1}}
 
 % TODO figure out graphs

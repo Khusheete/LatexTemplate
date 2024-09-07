@@ -1,15 +1,17 @@
-\documentclass[11pt,compact]{lecture}
+\documentclass{lecture}
+
+\documenttype{class}
 
 \usepackage{notation_fr}
 
 
 \title{Document de test}
 \subtitle{Heyyyy}
-\author{Siandfrance}
+\author{Khusheete}
 \institution{My Desk}
 \date{2022}
-\coauthors{Also Siandfrance (Siandfrance@mail.net), Still Siandfrance (Siandfrance@mail.net)}
-\contact{Siandfrance@mail.net}
+\coauthors{Also Khusheete (Khusheete@mail.net), Still Khusheete (Khusheete@mail.net)}
+\contact{Khusheete@mail.net}
 
 
 \begin{document}
@@ -39,6 +41,8 @@
                     &\limit{}{n\infty} 2
         \end{split}
     \]
+
+    \qed
 \end{proof}
 
 
@@ -59,6 +63,11 @@ pretium finibus, urna augue euismod urna, quis mollis massa ipsum eu massa.
 Vestibulum eleifend non lectus in ornare. Donec ut sagittis purus.
 
 
+\plot{-1}{1}{-1}{1}{
+    \draw[color=red, thick] plot (\x, {\x^3 + 1});
+}
+
+
 \begin{example}[]{}
     Et voici un autre paragraphe: Praesent ligula ex, ultricies sed magna ut,
     laoreet tempus nisl. Aenean dictum a justo suscipit sagittis. Vestibulum dapibus
@@ -68,6 +77,10 @@ Vestibulum eleifend non lectus in ornare. Donec ut sagittis purus.
     porttitor eros sodales quis. Sed at velit faucibus, dictum ligula eget, bibendum
     augue. Mauris condimentum orci eu eros cursus commodo. Morbi fringilla purus vel
     sapien semper consectetur.
+
+    \plot{-2.5}{2.5}{-2.5}{2.5}{
+        \draw[color=red, thick] plot ({\x^2 / 3}, {exp(\x) / 4 - 1});
+    }
 
     Et voici un autre paragraphe: Praesent ligula ex, ultricies sed magna ut,
     laoreet tempus nisl. Aenean dictum a justo suscipit sagittis. Vestibulum dapibus
