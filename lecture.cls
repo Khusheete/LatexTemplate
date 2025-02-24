@@ -62,8 +62,9 @@
 %%%%%%%%%%
 
 
-\RequirePackage{pdfpages}
+\RequirePackage{pdfpages}           % Page formatting
 \RequirePackage{geometry}
+\RequirePackage{fancyhdr}           % great headers
 
 \RequirePackage{xcolor}             % Colors !!!
 
@@ -74,13 +75,13 @@
 
 \tcbuselibrary{skins}
 \RequirePackage{titling}            % redefine title
-\RequirePackage{fancyhdr}           % great headers
 \RequirePackage{etoolbox}           % get title names
 \RequirePackage{lastpage}           % total page count
 \RequirePackage{amsmath,amssymb}    % math stuff
 \RequirePackage{ifthen}             % conditionals
 \RequirePackage{stmaryrd}
 \RequirePackage{esint}              % Integrals
+\RequirePackage{cancel}             % Cross things out
 
 % reference links
 \RequirePackage{hyperref}
