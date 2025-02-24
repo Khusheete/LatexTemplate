@@ -345,6 +345,7 @@
 \newcommand{\tor}{\quad\text{or}\quad}
 \newcommand{\iif}{\quad\text{if and only if}\quad}
 \newcommand{\when}{\quad\text{when}\quad}
+\newcommand{\with}{\quad\text{with}\quad}
 \newcommand{\otherwise}{\quad\text{otherwise}}
 
 % equivalent
