@@ -36,7 +36,7 @@
 \newcommand\documenttype[1]{
     \ifthenelse{\equal{#1}{class}}{
         \geometry{
-            hscale=0.85, vscale=0.82, vmarginratio=6:5,
+            hscale=0.85, vscale=0.82, vmarginratio=6:5
         }
     }{}
     \ifthenelse{\equal{#1}{twocolumn}}{
